@@ -1,21 +1,28 @@
 <!DOCTYPE html>
+<!-- Rhythm Master 3D - A WebGL-based rhythm game using Three.js and Tone.js -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rhythm Master 3D</title>
+  <!-- Game styles -->
   <style>
+    /* Base styles */
     body {
       margin: 0;
       overflow: hidden;
       font-family: 'Montserrat', 'Arial', sans-serif;
       background-color: #000;
     }
+
+    /* Game container */
     #game-container {
       position: relative;
       width: 100vw;
       height: 100vh;
     }
+
+    /* Score and combo UI */
     #ui-container {
       position: absolute;
       top: 20px;
@@ -30,24 +37,32 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       transition: all 0.3s;
     }
+
+    /* Score display */
     #score {
       font-size: 28px;
       margin-bottom: 10px;
       font-weight: 700;
       text-shadow: 0 0 10px rgba(98, 0, 234, 0.8);
     }
+
+    /* Combo counter */
     #combo {
       font-size: 22px;
       color: #ffcc00;
       font-weight: 600;
       text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
     }
+
+    /* Score multiplier */
     #multiplier {
       font-size: 18px;
       color: #00ffcc;
       margin-top: 8px;
       font-weight: 500;
     }
+
+    /* Song info display */
     #song-info {
       position: absolute;
       top: 20px;
@@ -62,26 +77,36 @@
       backdrop-filter: blur(5px);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
+
+    /* Song title */
     #song-title {
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 5px;
       color: #ff3e80;
     }
+
+    /* Difficulty indicator */
     #difficulty {
       font-size: 16px;
       color: #ffcc00;
     }
+
+    /* BPM display */
     #bpm {
       font-size: 14px;
       color: #00ffcc;
       margin-top: 5px;
     }
+
+    /* Song timer */
     #timer {
       font-size: 22px;
       margin-top: 8px;
       color: white;
     }
+
+    /* Game instructions */
     #instructions {
       position: absolute;
       bottom: 20px;
@@ -96,6 +121,8 @@
       backdrop-filter: blur(5px);
       transition: opacity 0.5s;
     }
+
+    /* Start screen */
     #start-screen {
       position: absolute;
       top: 0;
@@ -111,6 +138,8 @@
       color: white;
       text-align: center;
     }
+
+    /* Game title */
     #game-title {
       font-size: 60px;
       font-weight: 800;
@@ -121,11 +150,15 @@
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 0 10px rgba(98, 0, 234, 0.5));
     }
+
+    /* Song selection area */
     #song-selection {
       margin: 20px 0 30px 0;
       width: 80%;
       max-width: 600px;
     }
+
+    /* Option containers for song/difficulty */
     .option-container {
       display: flex;
       gap: 20px;
@@ -133,11 +166,15 @@
       flex-wrap: wrap;
       margin-bottom: 30px;
     }
+
+    /* Option labels */
     .option-label {
       font-size: 24px;
       margin-bottom: 10px;
       color: #ff3e80;
     }
+
+    /* Selection options */
     .option {
       background-color: rgba(98, 0, 234, 0.3);
       padding: 10px 20px;
@@ -146,15 +183,21 @@
       transition: all 0.3s;
       border: 2px solid transparent;
     }
+
+    /* Option hover effect */
     .option:hover {
       background-color: rgba(98, 0, 234, 0.5);
       transform: scale(1.05);
     }
+
+    /* Selected option style */
     .option.selected {
       background-color: rgba(98, 0, 234, 0.8);
       border: 2px solid #ff3e80;
       box-shadow: 0 0 15px rgba(255, 62, 128, 0.6);
     }
+
+    /* Start button */
     #start-button {
       padding: 15px 50px;
       background: linear-gradient(to right, #6200ea, #ff3e80);
@@ -168,10 +211,14 @@
       box-shadow: 0 5px 20px rgba(98, 0, 234, 0.5);
       margin-top: 20px;
     }
+
+    /* Start button hover effect */
     #start-button:hover {
       transform: scale(1.05);
       box-shadow: 0 8px 25px rgba(98, 0, 234, 0.7);
     }
+
+    /* Pause menu */
     #pause-menu {
       position: absolute;
       top: 0;
@@ -191,6 +238,8 @@
       pointer-events: none;
       transition: opacity 0.3s;
     }
+
+    /* Pause menu title */
     #pause-title {
       font-size: 48px;
       font-weight: 700;
@@ -200,6 +249,8 @@
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    /* Pause menu buttons */
     .pause-button {
       padding: 12px 40px;
       background: linear-gradient(to right, #6200ea, #ff3e80);
@@ -212,10 +263,14 @@
       margin: 10px 0;
       width: 200px;
     }
+
+    /* Pause button hover effect */
     .pause-button:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px rgba(98, 0, 234, 0.7);
     }
+
+    /* Results screen */
     #results-screen {
       position: absolute;
       top: 0;
@@ -235,6 +290,8 @@
       transition: opacity 0.5s;
       backdrop-filter: blur(5px);
     }
+
+    /* Results screen title */
     #results-title {
       font-size: 52px;
       font-weight: 800;
@@ -244,6 +301,8 @@
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    /* Results stats container */
     #results-stats {
       display: flex;
       flex-wrap: wrap;
@@ -253,6 +312,8 @@
       width: 80%;
       max-width: 800px;
     }
+
+    /* Individual stat box */
     .result-stat {
       background-color: rgba(98, 0, 234, 0.2);
       padding: 15px 25px;
@@ -263,21 +324,29 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       border-bottom: 3px solid #6200ea;
     }
+
+    /* Stat value */
     .stat-value {
       font-size: 36px;
       font-weight: 700;
       margin-bottom: 5px;
     }
+
+    /* Stat label */
     .stat-label {
       font-size: 16px;
       color: rgba(255, 255, 255, 0.7);
     }
+
+    /* Final rating display */
     #rating {
       font-size: 40px;
       font-weight: 800;
       margin: 20px 0;
       text-shadow: 0 0 20px rgba(255, 62, 128, 0.8);
     }
+
+    /* Hit feedback display */
     #hit-feedback {
       position: absolute;
       top: 50%;
@@ -290,22 +359,29 @@
       z-index: 15;
       text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
     }
+
+    /* Hit feedback colors */
     .perfect {
       color: #00ffaa;
       text-shadow: 0 0 20px rgba(0, 255, 170, 0.8) !important;
     }
+
     .great {
       color: #00ccff;
       text-shadow: 0 0 20px rgba(0, 204, 255, 0.8) !important;
     }
+
     .good {
       color: #ffcc00;
       text-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
     }
+
     .miss {
       color: #ff4444;
       text-shadow: 0 0 20px rgba(255, 68, 68, 0.8) !important;
     }
+
+    /* Combo popup animation */
     .combo-popup {
       position: absolute;
       font-size: 32px;
@@ -318,6 +394,8 @@
       z-index: 12;
       pointer-events: none;
     }
+
+    /* Energy bar container */
     #energy-bar-container {
       position: absolute;
       left: 50%;
@@ -332,6 +410,8 @@
       z-index: 10;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
+
+    /* Energy bar fill */
     #energy-bar {
       height: 100%;
       width: 0%;
@@ -339,6 +419,8 @@
       border-radius: 10px;
       transition: width 0.3s;
     }
+
+    /* Special move ready indicator */
     #special-ready {
       position: absolute;
       left: 50%;
@@ -351,6 +433,8 @@
       opacity: 0;
       z-index: 11;
     }
+
+    /* Particle effects */
     .particle {
       position: absolute;
       pointer-events: none;
@@ -358,6 +442,8 @@
       opacity: 0.8;
       z-index: 5;
     }
+
+    /* Lane indicators */
     .lane-indicator {
       position: absolute;
       bottom: 50px;
@@ -374,6 +460,8 @@
       z-index: 5;
       transition: transform 0.2s;
     }
+
+    /* Special mode overlay */
     .special-mode-overlay {
       position: absolute;
       top: 0;
@@ -386,11 +474,15 @@
       transition: opacity 0.5s;
       z-index: 4;
     }
+
+    /* Pulse animation */
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
+
+    /* Progress bar container */
     .progress-container {
       position: absolute;
       bottom: 0;
@@ -400,6 +492,8 @@
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 11;
     }
+
+    /* Progress bar fill */
     #progress-bar {
       height: 100%;
       width: 0%;
@@ -409,13 +503,16 @@
   </style>
 </head>
 <body>
+  <!-- Main game container -->
   <div id="game-container">
+    <!-- Score and combo display -->
     <div id="ui-container">
       <div id="score">Score: 0</div>
       <div id="combo">Combo: 0</div>
       <div id="multiplier">Multiplier: x1.0</div>
     </div>
     
+    <!-- Song information display -->
     <div id="song-info">
       <div id="song-title">Loading...</div>
       <div id="difficulty">Loading...</div>
@@ -423,25 +520,33 @@
       <div id="timer">00:00</div>
     </div>
     
+    <!-- Hit feedback display -->
     <div id="hit-feedback"></div>
+
+    <!-- Game instructions -->
     <div id="instructions">
       Press D, F, J, K when the notes reach the target zone. Press SPACE for Special when ready!
     </div>
     
+    <!-- Energy bar for special move -->
     <div id="energy-bar-container">
       <div id="energy-bar"></div>
     </div>
     <div id="special-ready">SPECIAL READY! [SPACE]</div>
     
+    <!-- Progress bar -->
     <div class="progress-container">
       <div id="progress-bar"></div>
     </div>
     
+    <!-- Special mode visual effect -->
     <div class="special-mode-overlay" id="special-mode-overlay"></div>
     
+    <!-- Start screen -->
     <div id="start-screen">
       <h1 id="game-title">RHYTHM MASTER 3D</h1>
       
+      <!-- Song and difficulty selection -->
       <div id="song-selection">
         <div class="option-label">SELECT TRACK</div>
         <div class="option-container" id="track-options">
@@ -461,6 +566,7 @@
       <button id="start-button">START GAME</button>
     </div>
     
+    <!-- Pause menu -->
     <div id="pause-menu">
       <h2 id="pause-title">GAME PAUSED</h2>
       <button class="pause-button" id="resume-button">Resume</button>
@@ -468,9 +574,11 @@
       <button class="pause-button" id="quit-button">Quit</button>
     </div>
     
+    <!-- Results screen -->
     <div id="results-screen">
       <h2 id="results-title">RESULTS</h2>
       
+      <!-- Results statistics -->
       <div id="results-stats">
         <div class="result-stat">
           <div class="stat-value" id="result-score">0</div>
@@ -505,10 +613,11 @@
     </div>
   </div>
 
-  <!-- Using direct, reliable URLs for the libraries -->
+  <!-- External libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   
+  <!-- Game logic script -->
   <script>
     // Add debug console logging
     console.log("Game script starting...");
